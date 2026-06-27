@@ -3,141 +3,186 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Felix Plaza Directory</title>
+<title>Felix Plaza — Store Directory</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    background: #F2F0EC;
+    background: #EDE9E3;
     font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
     color: #1A1035;
     min-height: 100vh;
   }
 
-  /* ═══ FLOOR COLOUR TOKENS ═══════════════════════════════
-     GF  Orchid Pink      #C040C0
-     1F  Electric Purple  #7B45FF
-     2F  Vivid Blue       #4D7BFF
-     3F  Hot Fuchsia      #FF3EB5
-     CON Soft Lavender    #C07FFF
-  ═══════════════════════════════════════════════════════ */
-
-  /* ── STICKY HEADER ────────────────────────────────────── */
+  /* ── HEADER ────────────────────────────────────────────── */
   .site-header {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: #FFFFFF;
+    background: #fff;
     border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding: 12px 16px 11px;
+  }
+
+  .header-top {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
+    gap: 11px;
   }
 
   .logo-mark {
-    width: 38px;
-    height: 38px;
-    border-radius: 8px;
-    background: linear-gradient(138deg, #FF8DFC 0%, #561AAD 100%);
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
-    font-weight: 900;
-    color: #fff;
     flex-shrink: 0;
+    overflow: hidden;
   }
 
+  .logo-mark img {
+    width: 95%;
+    height: 95%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .header-text { flex: 1; }
+
   .site-title {
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 15px;
+    font-weight: 800;
     color: #1A1035;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
     text-transform: uppercase;
+    line-height: 1;
   }
 
   .site-title span { color: #C040C0; }
 
-  .header-count {
-    margin-left: auto;
-    font-size: 11px;
-    font-weight: 600;
+  .site-subtitle {
+    font-size: 10px;
+    font-weight: 500;
     color: #9080C0;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 3px;
   }
 
-  /* ── STICKY FLOOR FILTER TABS ─────────────────────────── */
-  .tab-bar {
+  .store-count-badge {
+    flex-shrink: 0;
+    background: #F3F0FF;
+    border: 1px solid rgba(86,26,173,0.15);
+    border-radius: 20px;
+    padding: 5px 11px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #561AAD;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+
+  /* ── FILTER BAR ────────────────────────────────────────── */
+  .filter-bar {
     position: sticky;
-    top: 62px;
+    top: 64px;
     z-index: 99;
     background: #F8F6F2;
     border-bottom: 1px solid rgba(0,0,0,0.07);
+    padding: 10px 0;
+  }
+
+  .filter-row {
     display: flex;
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding: 10px 16px;
-    gap: 8px;
-  }
-  .tab-bar::-webkit-scrollbar { display: none; }
-
-  .tab {
-    flex-shrink: 0;
-    padding: 7px 16px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    cursor: pointer;
-    border: 1.5px solid transparent;
-    transition: all 0.18s ease;
-    background: #fff;
-    color: #6050A0;
-    border-color: rgba(0,0,0,0.08);
+    align-items: center;
+    padding: 0 16px;
   }
 
-  .tab.active-all  { background: #1A1035; color: #fff; border-color: #1A1035; }
-  .tab.active-gf   { background: #C040C0; color: #fff; border-color: #C040C0; }
-  .tab.active-1f   { background: #7B45FF; color: #fff; border-color: #7B45FF; }
-  .tab.active-2f   { background: #4D7BFF; color: #fff; border-color: #4D7BFF; }
-  .tab.active-3f   { background: #FF3EB5; color: #fff; border-color: #FF3EB5; }
-  .tab.active-con  { background: #C07FFF; color: #fff; border-color: #C07FFF; }
+  .filter-row + .filter-row { margin-top: 8px; }
 
-  /* ── BRAND LIST ───────────────────────────────────────── */
-  .brand-list {
-    padding: 8px 0 24px;
-  }
-
-  .cat-block {
-    margin-bottom: 2px;
-  }
-
-  /* Category heading */
-  .cat-header {
-    font-size: 10.5px;
+  .filter-label {
+    font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.18em;
     text-transform: uppercase;
+    color: #9080C0;
+    flex-shrink: 0;
+    width: 48px;
+    margin-right: 8px;
+  }
+
+  .filter-pills {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex: 1;
+  }
+  .filter-pills::-webkit-scrollbar { display: none; }
+
+  .pill {
+    flex-shrink: 0;
+    padding: 6px 13px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1.5px solid rgba(0,0,0,0.10);
+    background: #fff;
+    color: #5040A0;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  /* Floor active states */
+  .pill.pill-floor.active-all { background: #1A1035; color: #fff; border-color: #1A1035; }
+  .pill.pill-floor.active-con { background: #C07FFF; color: #fff; border-color: #C07FFF; }
+  .pill.pill-floor.active-gf  { background: #C040C0; color: #fff; border-color: #C040C0; }
+  .pill.pill-floor.active-1f  { background: #7B45FF; color: #fff; border-color: #7B45FF; }
+  .pill.pill-floor.active-2f  { background: #4D7BFF; color: #fff; border-color: #4D7BFF; }
+  .pill.pill-floor.active-3f  { background: #FF3EB5; color: #fff; border-color: #FF3EB5; }
+
+  /* Category active state */
+  .pill.pill-cat.active { background: #1A1035; color: #fff; border-color: #1A1035; }
+
+  .filter-sep {
+    height: 1px;
+    margin: 8px 16px 0;
+    background: rgba(0,0,0,0.06);
+  }
+
+  /* ── BRAND LIST ────────────────────────────────────────── */
+  .brand-list { padding: 6px 0 24px; }
+
+  .cat-block { margin-bottom: 0; }
+
+  .cat-header {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
     color: #3D2870;
-    padding: 14px 16px 8px;
+    padding: 14px 16px 8px 13px;
     border-left: 3px solid #C040C0;
     background: rgba(192,64,192,0.05);
-    margin: 0 16px 4px;
+    margin: 8px 16px 2px;
     border-radius: 0 6px 6px 0;
   }
 
-  /* Brand row */
   .brand-row {
     display: flex;
     align-items: center;
-    min-height: 46px;
+    min-height: 48px;
     padding: 0 16px;
     border-bottom: 1px solid rgba(0,0,0,0.04);
     background: #fff;
+    gap: 8px;
   }
 
   .brand-row:last-child { border-bottom: none; }
@@ -148,64 +193,65 @@
     flex: 1;
   }
 
-  /* Floor colors on brand names */
   .br-gf  .brand-name { color: #C040C0; }
   .br-1f  .brand-name { color: #7B45FF; }
   .br-2f  .brand-name { color: #4D7BFF; }
   .br-3f  .brand-name { color: #FF3EB5; }
   .br-con .brand-name { color: #C07FFF; }
 
-  /* Floor tag badges */
+  .ftag-group { display: flex; gap: 4px; flex-shrink: 0; }
+
   .ftag {
-    font-size: 9.5px;
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.04em;
     padding: 3px 8px;
     border-radius: 4px;
     flex-shrink: 0;
   }
 
-  .ftag-gf  { background: rgba(192,64,192,0.12);  color: #C040C0; }
-  .ftag-1f  { background: rgba(123,69,255,0.13);  color: #7B45FF; }
-  .ftag-2f  { background: rgba(77,123,255,0.13);  color: #4D7BFF; }
-  .ftag-3f  { background: rgba(255,62,181,0.12);  color: #FF3EB5; }
-  .ftag-con { background: rgba(192,127,255,0.14); color: #C07FFF; }
+  .ftag-gf  { background: rgba(192,64,192,0.11);  color: #C040C0; }
+  .ftag-1f  { background: rgba(123,69,255,0.11);  color: #7B45FF; }
+  .ftag-2f  { background: rgba(77,123,255,0.11);  color: #4D7BFF; }
+  .ftag-3f  { background: rgba(255,62,181,0.11);  color: #FF3EB5; }
+  .ftag-con { background: rgba(192,127,255,0.13); color: #C07FFF; }
 
-  /* Empty state */
+  /* ── EMPTY STATE ───────────────────────────────────────── */
   .empty-state {
     display: none;
     text-align: center;
-    padding: 60px 24px;
+    padding: 56px 24px;
     color: #9080C0;
     font-size: 14px;
+    font-weight: 500;
   }
+  .empty-state .empty-icon { font-size: 32px; margin-bottom: 10px; }
 
-  /* ── DIVIDER ──────────────────────────────────────────── */
+  /* ── DIVIDER ───────────────────────────────────────────── */
   .zone-divider {
     height: 1px;
     margin: 8px 0;
     background: linear-gradient(90deg,
-      transparent 0%, rgba(192,64,192,0.3) 30%,
-      rgba(123,69,255,0.15) 70%, transparent 100%);
+      transparent 0%, rgba(192,64,192,0.28) 30%,
+      rgba(123,69,255,0.14) 70%, transparent 100%);
   }
 
-  /* ── FLOOR GUIDE CARDS ────────────────────────────────── */
+  /* ── FLOOR GUIDE CARDS ─────────────────────────────────── */
   .floor-guide {
-    padding: 20px 16px 32px;
+    padding: 20px 16px 36px;
     background: #F8F6F2;
     border-top: 1px solid rgba(0,0,0,0.07);
   }
 
   .guide-eyebrow {
-    font-size: 9.5px;
+    font-size: 9px;
     font-weight: 700;
     color: #5040A0;
-    letter-spacing: 0.28em;
+    letter-spacing: 0.26em;
     text-transform: uppercase;
     margin-bottom: 14px;
   }
 
-  /* Horizontal scroll row of cards */
   .floor-cards {
     display: flex;
     gap: 12px;
@@ -217,18 +263,17 @@
 
   .floor-card {
     flex-shrink: 0;
-    width: 160px;
+    width: 155px;
     border-radius: 12px;
     border: 1px solid transparent;
     overflow: hidden;
   }
 
-  /* Per-floor card theming */
-  .fc-gf  { background: rgba(192,64,192,0.07);   border-color: rgba(192,64,192,0.22); }
-  .fc-1f  { background: rgba(123,69,255,0.07);   border-color: rgba(123,69,255,0.22); }
-  .fc-2f  { background: rgba(77,123,255,0.07);   border-color: rgba(77,123,255,0.22); }
-  .fc-3f  { background: rgba(255,62,181,0.07);   border-color: rgba(255,62,181,0.22); }
-  .fc-con { background: rgba(192,127,255,0.07);  border-color: rgba(192,127,255,0.22); }
+  .fc-gf  { background: rgba(192,64,192,0.07);  border-color: rgba(192,64,192,0.22); }
+  .fc-1f  { background: rgba(123,69,255,0.07);  border-color: rgba(123,69,255,0.22); }
+  .fc-2f  { background: rgba(77,123,255,0.07);  border-color: rgba(77,123,255,0.22); }
+  .fc-3f  { background: rgba(255,62,181,0.07);  border-color: rgba(255,62,181,0.22); }
+  .fc-con { background: rgba(192,127,255,0.07); border-color: rgba(192,127,255,0.22); }
 
   .card-bar { height: 4px; }
   .fc-gf  .card-bar { background: #C040C0; }
@@ -237,55 +282,44 @@
   .fc-3f  .card-bar { background: #FF3EB5; }
   .fc-con .card-bar { background: #C07FFF; }
 
-  .card-body { padding: 12px; }
+  .card-body { padding: 12px 12px 14px; }
 
   .card-level {
-    font-size: 9px;
+    font-size: 8.5px;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     margin-bottom: 2px;
   }
-  .fc-gf  .card-level { color: rgba(192,64,192,0.7); }
-  .fc-1f  .card-level { color: rgba(123,69,255,0.7); }
-  .fc-2f  .card-level { color: rgba(77,123,255,0.7); }
-  .fc-3f  .card-level { color: rgba(255,62,181,0.7); }
-  .fc-con .card-level { color: rgba(192,127,255,0.7); }
+  .fc-gf  .card-level { color: rgba(192,64,192,0.6); }
+  .fc-1f  .card-level { color: rgba(123,69,255,0.6); }
+  .fc-2f  .card-level { color: rgba(77,123,255,0.6); }
+  .fc-3f  .card-level { color: rgba(255,62,181,0.6); }
+  .fc-con .card-level { color: rgba(192,127,255,0.6); }
 
   .card-floor-name {
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 800;
     color: #1A1035;
-    margin-bottom: 4px;
+    margin-bottom: 12px;
   }
 
-  .card-theme {
-    font-size: 9.5px;
-    color: #7060B0;
-    line-height: 1.4;
-    margin-bottom: 10px;
-  }
-
-  .card-divider {
-    height: 1px;
-    background: rgba(0,0,0,0.06);
-    margin-bottom: 8px;
-  }
+  .card-divider { height: 1px; background: rgba(0,0,0,0.07); margin-bottom: 9px; }
 
   .card-brands-label {
-    font-size: 8px;
-    font-weight: 700;
-    letter-spacing: 0.16em;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #7060B0;
-    margin-bottom: 5px;
+    margin-bottom: 7px;
   }
+  .fc-gf  .card-brands-label { color: #C040C0; }
+  .fc-1f  .card-brands-label { color: #7B45FF; }
+  .fc-2f  .card-brands-label { color: #4D7BFF; }
+  .fc-3f  .card-brands-label { color: #FF3EB5; }
+  .fc-con .card-brands-label { color: #C07FFF; }
 
-  .card-brand-item {
-    font-size: 11px;
-    font-weight: 500;
-    line-height: 1.7;
-  }
+  .card-brand-item { font-size: 11.5px; font-weight: 500; line-height: 1.8; }
   .fc-gf  .card-brand-item { color: rgba(192,64,192,0.85); }
   .fc-1f  .card-brand-item { color: rgba(123,69,255,0.85); }
   .fc-2f  .card-brand-item { color: rgba(77,123,255,0.85); }
@@ -298,211 +332,207 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: #6050A8;
-    margin-top: 8px;
-    padding-top: 6px;
-    border-top: 1px solid rgba(0,0,0,0.05);
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(0,0,0,0.06);
   }
 
-  /* Hide/show logic */
+  /* ── HIDE/SHOW ─────────────────────────────────────────── */
   .brand-row.hidden { display: none; }
   .cat-block.hidden { display: none; }
 </style>
 </head>
 <body>
 
-<!-- ── STICKY HEADER ──────────────────────────────────────── -->
+<!-- HEADER -->
 <header class="site-header">
-  <div class="logo-mark">FP</div>
-  <div class="site-title">Felix <span>Plaza</span></div>
-  <div class="header-count" id="store-count">114 Stores</div>
+  <div class="header-top">
+    <div class="logo-mark">
+      <img src="logo.png" alt="Felix Plaza Logo">
+    </div>
+    <div class="header-text">
+      <div class="site-title">Felix <span>Plaza</span></div>
+      <div class="site-subtitle">Store Directory</div>
+    </div>
+    <div class="store-count-badge" id="store-count">63 Stores</div>
+  </div>
 </header>
 
-<!-- ── FLOOR FILTER TABS ──────────────────────────────────── -->
-<div class="tab-bar">
-  <div class="tab active-all" data-floor="all" onclick="filterFloor('all', this)">All Floors</div>
-  <div class="tab" data-floor="gf"  onclick="filterFloor('gf', this)">GF</div>
-  <div class="tab" data-floor="1f"  onclick="filterFloor('1f', this)">1F</div>
-  <div class="tab" data-floor="2f"  onclick="filterFloor('2f', this)">2F</div>
-  <div class="tab" data-floor="3f"  onclick="filterFloor('3f', this)">3F</div>
-  <div class="tab" data-floor="con" onclick="filterFloor('con', this)">CON</div>
+<!-- FILTERS -->
+<div class="filter-bar">
+
+  <div class="filter-row">
+    <div class="filter-label">Floor</div>
+    <div class="filter-pills">
+      <div class="pill pill-floor active-all" onclick="filterFloor('all',this)">All</div>
+      <div class="pill pill-floor" onclick="filterFloor('con',this)">CON</div>
+      <div class="pill pill-floor" onclick="filterFloor('gf',this)">GF</div>
+      <div class="pill pill-floor" onclick="filterFloor('1f',this)">1F</div>
+      <div class="pill pill-floor" onclick="filterFloor('2f',this)">2F</div>
+      <div class="pill pill-floor" onclick="filterFloor('3f',this)">3F</div>
+    </div>
+  </div>
+
+  <div class="filter-sep"></div>
+
+  <div class="filter-row" style="margin-top:8px;">
+    <div class="filter-label">Browse</div>
+    <div class="filter-pills">
+      <div class="pill pill-cat active" onclick="filterCat('all',this)">All</div>
+      <div class="pill pill-cat" onclick="filterCat('fashion',this)">Fashion</div>
+      <div class="pill pill-cat" onclick="filterCat('food',this)">Food</div>
+      <div class="pill pill-cat" onclick="filterCat('beauty',this)">Beauty</div>
+      <div class="pill pill-cat" onclick="filterCat('home',this)">Home</div>
+      <div class="pill pill-cat" onclick="filterCat('entertainment',this)">Entertainment</div>
+      <div class="pill pill-cat" onclick="filterCat('kids',this)">Kids</div>
+    </div>
+  </div>
+
 </div>
 
-<!-- ── BRAND LIST ─────────────────────────────────────────── -->
+<!-- BRAND LIST -->
 <div class="brand-list" id="brand-list">
 
-  <!-- Fashion A–L -->
-  <div class="cat-block" data-cat="fashion-a">
-    <div class="cat-header">Fashion &amp; Apparel &nbsp;A – L</div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">AND</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Allen Solly</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Armani Exchange</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Aurelia</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Biba</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Chemistry</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">ColorPlus</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Cover Story</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Ethnicity</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">FabIndia</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Global Desi</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">H&amp;M</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Jack &amp; Jones</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Jealous 21</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Kazo</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Levi's</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Lifestyle</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Louis Philippe</span><span class="ftag ftag-1f">1F</span></div>
+  <div class="cat-block" data-cat="fashion">
+    <div class="cat-header">Fashion &amp; Accessories</div>
+    <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">Aretto</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">ASICS</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">Barara Ethnic</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
+    <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">Biba</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Birken Stock</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Bluestone</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Bonkers Corner</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Calvin Klein</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">CaratLane</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Crocs</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">GIVA</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf 1f" data-cat="fashion"><span class="brand-name">H&amp;M</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Hidesign</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">INC.5</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Levi's</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">Libas</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf 1f 2f" data-cat="fashion"><span class="brand-name">Lifestyle</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span><span class="ftag ftag-1f">1F</span><span class="ftag ftag-2f">2F</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Madame</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Marks &amp; Spencer</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Max Fashion</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">Meena Bazaar</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Mochi</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">Nykd By Nykaa</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Pepe Jeans</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">PUMA</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">R&amp;B</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Rareism</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">Sabhyata</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Skechers</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-con" data-floor="con" data-cat="fashion"><span class="brand-name">Style Union</span><div class="ftag-group"><span class="ftag ftag-con">CON</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">The Bear House</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Tommy Hilfiger</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">U.S. Polo Assn.</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Westside</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Zudio</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
   </div>
 
-  <!-- Fashion M–Z -->
-  <div class="cat-block" data-cat="fashion-m">
-    <div class="cat-header">Fashion &amp; Apparel &nbsp;M – Z</div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">M&amp;S</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">MAX</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Meena Bazaar</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Mulmul</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Only</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Park Avenue</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Peter England</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Plepleberry</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Rangriti</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">R&amp;B</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Stori</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Superdry</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Tommy Hilfiger</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Vedic Valley</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Van Heusen</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Westside</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Wrogn</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Zudio</span><span class="ftag ftag-1f">1F</span></div>
+  <div class="cat-block" data-cat="fashion">
+    <div class="cat-header">Men's Apparels</div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Arrow</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Blackberrys</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Rare Rabbit</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Snitch</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">TASVA</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
   </div>
 
-  <!-- Sports & Footwear -->
-  <div class="cat-block" data-cat="sports">
-    <div class="cat-header">Sports &amp; Footwear</div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Adidas</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Asics</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Campus</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Clarks</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Crocs</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Hush Puppies</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Metro Shoes</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Mochi</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Nike</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">PUMA</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Skechers</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Sportsfit</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Under Armour</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Woodland</span><span class="ftag ftag-gf">GF</span></div>
-  </div>
-
-  <!-- Jewellery & Watches -->
-  <div class="cat-block" data-cat="jewellery">
-    <div class="cat-header">Jewellery &amp; Watches</div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Caratlane</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Fossil</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">ORRA</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">PC Jeweller</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Tanishq</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Titan</span><span class="ftag ftag-gf">GF</span></div>
-  </div>
-
-  <!-- Beauty & Wellness -->
-  <div class="cat-block" data-cat="beauty">
-    <div class="cat-header">Beauty &amp; Wellness</div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Forest Essentials</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Kama Ayurveda</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Nykaa</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Skin Bae</span><span class="ftag ftag-gf">GF</span></div>
-  </div>
-
-  <!-- Food & Dining -->
   <div class="cat-block" data-cat="food">
     <div class="cat-header">Food &amp; Dining</div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">Amritsari Express</span><span class="ftag ftag-3f">3F</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Blue Tokai</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">Burger King</span><span class="ftag ftag-3f">3F</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Chaayos</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Cherish Bakery</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Copper Chimney</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">Dominos</span><span class="ftag ftag-3f">3F</span></div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">Gianis</span><span class="ftag ftag-3f">3F</span></div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">Haldiram</span><span class="ftag ftag-3f">3F</span></div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">House of Candy</span><span class="ftag ftag-3f">3F</span></div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">KFC</span><span class="ftag ftag-3f">3F</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Nando's</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Punjab Grill</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">Rajwada Bhog</span><span class="ftag ftag-3f">3F</span></div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">Subway</span><span class="ftag ftag-3f">3F</span></div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">Taco Bell</span><span class="ftag ftag-3f">3F</span></div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">The Indian Stories</span><span class="ftag ftag-3f">3F</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Third Wave Coffee</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">Toniq</span><span class="ftag ftag-3f">3F</span></div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">Wow Momos</span><span class="ftag ftag-3f">3F</span></div>
+    <div class="brand-row br-3f" data-floor="3f" data-cat="food"><span class="brand-name">Amritsari Express</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="food"><span class="brand-name">Blue Tokai</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-3f" data-floor="3f" data-cat="food"><span class="brand-name">Burger King</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="food"><span class="brand-name">Chaayos</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-3f" data-floor="3f" data-cat="food"><span class="brand-name">KFC</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
+    <div class="brand-row br-3f" data-floor="3f" data-cat="food"><span class="brand-name">Taco Bell</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
+    <div class="brand-row br-3f" data-floor="3f" data-cat="food"><span class="brand-name">The Indian Stories</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
+    <div class="brand-row br-3f" data-floor="3f" data-cat="food"><span class="brand-name">Toniq</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
+    <div class="brand-row br-3f" data-floor="3f" data-cat="food"><span class="brand-name">Wow (Momos, China &amp; Kulfi)</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
   </div>
 
-  <!-- Electronics & Tech -->
-  <div class="cat-block" data-cat="electronics">
-    <div class="cat-header">Electronics &amp; Tech</div>
-    <div class="brand-row br-gf"  data-floor="gf"><span class="brand-name">Apple</span><span class="ftag ftag-gf">GF</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Samsung</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-con" data-floor="con"><span class="brand-name">VIVO</span><span class="ftag ftag-con">CON</span></div>
+  <div class="cat-block" data-cat="beauty">
+    <div class="cat-header">Beauty &amp; Wellness</div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="beauty"><span class="brand-name">Forest Essentials</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="beauty"><span class="brand-name">Geetanjali Salon</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="beauty"><span class="brand-name">Nykaa</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="beauty"><span class="brand-name">Skin Bae</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
   </div>
 
-  <!-- Home & Lifestyle -->
   <div class="cat-block" data-cat="home">
-    <div class="cat-header">Home &amp; Lifestyle</div>
-    <div class="brand-row br-con" data-floor="con"><span class="brand-name">American Tourister</span><span class="ftag ftag-con">CON</span></div>
-    <div class="brand-row br-con" data-floor="con"><span class="brand-name">DIY</span><span class="ftag ftag-con">CON</span></div>
-    <div class="brand-row br-con" data-floor="con"><span class="brand-name">Happynest</span><span class="ftag ftag-con">CON</span></div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">Market99</span><span class="ftag ftag-3f">3F</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Miniso</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Om Book Shop</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-con" data-floor="con"><span class="brand-name">Safari</span><span class="ftag ftag-con">CON</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Samsonite</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-con" data-floor="con"><span class="brand-name">The Sleep Company</span><span class="ftag ftag-con">CON</span></div>
-    <div class="brand-row br-con" data-floor="con"><span class="brand-name">V.I.P</span><span class="ftag ftag-con">CON</span></div>
-    <div class="brand-row br-con" data-floor="con"><span class="brand-name">Wakefit</span><span class="ftag ftag-con">CON</span></div>
+    <div class="cat-header">Home &amp; Electronics</div>
+    <div class="brand-row br-con" data-floor="con" data-cat="home"><span class="brand-name">HappyNest</span><div class="ftag-group"><span class="ftag ftag-con">CON</span></div></div>
+    <div class="brand-row br-3f" data-floor="3f" data-cat="home"><span class="brand-name">Market 99</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="home"><span class="brand-name">Miniso</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-con" data-floor="con" data-cat="home"><span class="brand-name">Mr. DIY</span><div class="ftag-group"><span class="ftag ftag-con">CON</span></div></div>
+    <div class="brand-row br-con" data-floor="con" data-cat="home"><span class="brand-name">The Sleep Company</span><div class="ftag-group"><span class="ftag ftag-con">CON</span></div></div>
+    <div class="brand-row br-con" data-floor="con" data-cat="home"><span class="brand-name">Wakefit</span><div class="ftag-group"><span class="ftag ftag-con">CON</span></div></div>
   </div>
 
-  <!-- Entertainment & Kids -->
   <div class="cat-block" data-cat="entertainment">
-    <div class="cat-header">Entertainment &amp; Kids</div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Baby Shop</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-1f"  data-floor="1f"><span class="brand-name">Bonkers Corner</span><span class="ftag ftag-1f">1F</span></div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">Cinepolis</span><span class="ftag ftag-3f">3F</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">FUNBLOCK</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-3f"  data-floor="3f"><span class="brand-name">FUNCITY</span><span class="ftag ftag-3f">3F</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Gamex</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Hamleys</span><span class="ftag ftag-2f">2F</span></div>
-    <div class="brand-row br-2f"  data-floor="2f"><span class="brand-name">Purple United Kids</span><span class="ftag ftag-2f">2F</span></div>
+    <div class="cat-header">Entertainment &amp; Leisure</div>
+    <div class="brand-row br-3f" data-floor="3f" data-cat="entertainment"><span class="brand-name">Fun City</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
+    <div class="brand-row br-2f" data-floor="2f" data-cat="entertainment"><span class="brand-name">Om Book Shop</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
   </div>
 
-  <div class="empty-state" id="empty-state">No stores on this floor in this category.</div>
+  <div class="cat-block" data-cat="kids">
+    <div class="cat-header">Kid's Fashion</div>
+    <div class="brand-row br-2f" data-floor="2f" data-cat="kids"><span class="brand-name">Babyshop</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
+  </div>
 
-</div><!-- /brand-list -->
+  <div class="cat-block" data-cat="home">
+    <div class="cat-header">Electronic Appliances</div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="home"><span class="brand-name">Samsung</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+  </div>
+
+  <div class="empty-state" id="empty-state">
+    <div class="empty-icon">🔍</div>
+    No stores match this combination.
+  </div>
+
+</div>
 
 <div class="zone-divider"></div>
 
-<!-- ── FLOOR GUIDE ─────────────────────────────────────────── -->
+<!-- FLOOR GUIDE CARDS — CON first -->
 <div class="floor-guide">
-  <div class="guide-eyebrow">Floor Guide</div>
+  <div class="guide-eyebrow">Felix Plaza — Floor Guide</div>
   <div class="floor-cards">
+
+    <div class="floor-card fc-con">
+      <div class="card-bar"></div>
+      <div class="card-body">
+        <div class="card-level">Concourse</div>
+        <div class="card-floor-name">Concourse</div>
+        <div class="card-divider"></div>
+        <div class="card-brands-label">Key Stores</div>
+        <div class="card-brand-item">Style Union</div>
+        <div class="card-brand-item">Wakefit</div>
+        <div class="card-brand-item">The Sleep Company</div>
+        <div class="card-brand-item">Mr. DIY</div>
+        <div class="card-brand-item">HappyNest</div>
+        <div class="card-count">5 Stores</div>
+      </div>
+    </div>
 
     <div class="floor-card fc-gf">
       <div class="card-bar"></div>
       <div class="card-body">
         <div class="card-level">Ground</div>
         <div class="card-floor-name">Ground Floor</div>
-        <div class="card-theme">Premium fashion, jewellery, beauty &amp; international brands</div>
         <div class="card-divider"></div>
         <div class="card-brands-label">Key Stores</div>
         <div class="card-brand-item">H&amp;M</div>
         <div class="card-brand-item">Westside</div>
-        <div class="card-brand-item">Lifestyle</div>
-        <div class="card-brand-item">M&amp;S</div>
+        <div class="card-brand-item">Calvin Klein</div>
+        <div class="card-brand-item">Marks &amp; Spencer</div>
+        <div class="card-brand-item">CaratLane</div>
         <div class="card-brand-item">Nykaa</div>
-        <div class="card-brand-item">Caratlane</div>
-        <div class="card-count">33 Stores</div>
+        <div class="card-brand-item">Levi's</div>
+        <div class="card-count">18 Stores</div>
       </div>
     </div>
 
@@ -511,16 +541,16 @@
       <div class="card-body">
         <div class="card-level">Level 1</div>
         <div class="card-floor-name">First Floor</div>
-        <div class="card-theme">Fashion, sportswear, footwear &amp; cafés</div>
         <div class="card-divider"></div>
         <div class="card-brands-label">Key Stores</div>
         <div class="card-brand-item">Zudio</div>
-        <div class="card-brand-item">MAX</div>
-        <div class="card-brand-item">R&amp;B</div>
-        <div class="card-brand-item">Adidas</div>
+        <div class="card-brand-item">Max Fashion</div>
         <div class="card-brand-item">PUMA</div>
+        <div class="card-brand-item">Blackberrys</div>
+        <div class="card-brand-item">Samsung</div>
         <div class="card-brand-item">Chaayos</div>
-        <div class="card-count">31 Stores</div>
+        <div class="card-brand-item">R&amp;B</div>
+        <div class="card-count">23 Stores</div>
       </div>
     </div>
 
@@ -529,16 +559,15 @@
       <div class="card-body">
         <div class="card-level">Level 2</div>
         <div class="card-floor-name">Second Floor</div>
-        <div class="card-theme">Women's fashion, kids, gaming &amp; dining</div>
         <div class="card-divider"></div>
         <div class="card-brands-label">Key Stores</div>
-        <div class="card-brand-item">Hamleys</div>
-        <div class="card-brand-item">Baby Shop</div>
-        <div class="card-brand-item">Gamex</div>
-        <div class="card-brand-item">Punjab Grill</div>
-        <div class="card-brand-item">Nando's</div>
-        <div class="card-brand-item">FUNBLOCK</div>
-        <div class="card-count">22 Stores</div>
+        <div class="card-brand-item">Lifestyle</div>
+        <div class="card-brand-item">Biba</div>
+        <div class="card-brand-item">Meena Bazaar</div>
+        <div class="card-brand-item">TASVA</div>
+        <div class="card-brand-item">Babyshop</div>
+        <div class="card-brand-item">Om Book Shop</div>
+        <div class="card-count">11 Stores</div>
       </div>
     </div>
 
@@ -547,34 +576,15 @@
       <div class="card-body">
         <div class="card-level">Level 3</div>
         <div class="card-floor-name">Third Floor</div>
-        <div class="card-theme">Entertainment, food court &amp; multiplex</div>
         <div class="card-divider"></div>
         <div class="card-brands-label">Key Stores</div>
-        <div class="card-brand-item">Cinepolis</div>
-        <div class="card-brand-item">FUNCITY</div>
-        <div class="card-brand-item">Haldiram</div>
         <div class="card-brand-item">KFC</div>
-        <div class="card-brand-item">Dominos</div>
         <div class="card-brand-item">Burger King</div>
-        <div class="card-count">16 Stores</div>
-      </div>
-    </div>
-
-    <div class="floor-card fc-con">
-      <div class="card-bar"></div>
-      <div class="card-body">
-        <div class="card-level">Concourse</div>
-        <div class="card-floor-name">Concourse</div>
-        <div class="card-theme">Home, lifestyle, luggage &amp; travel</div>
-        <div class="card-divider"></div>
-        <div class="card-brands-label">Key Stores</div>
-        <div class="card-brand-item">Wakefit</div>
-        <div class="card-brand-item">Style Union</div>
-        <div class="card-brand-item">The Sleep Co.</div>
-        <div class="card-brand-item">American Tourister</div>
-        <div class="card-brand-item">Samsonite</div>
-        <div class="card-brand-item">DIY</div>
-        <div class="card-count">12 Stores</div>
+        <div class="card-brand-item">Taco Bell</div>
+        <div class="card-brand-item">Fun City</div>
+        <div class="card-brand-item">Toniq</div>
+        <div class="card-brand-item">Market 99</div>
+        <div class="card-count">9 Stores</div>
       </div>
     </div>
 
@@ -582,33 +592,56 @@
 </div>
 
 <script>
-  const floorCounts = { all: 114, gf: 33, '1f': 31, '2f': 22, '3f': 16, con: 12 };
+  let activeFloor = 'all';
+  let activeCat   = 'all';
 
-  function filterFloor(floor, el) {
-    // Update tab active state
-    document.querySelectorAll('.tab').forEach(t => {
-      t.className = 'tab';
-    });
-    el.className = 'tab active-' + floor;
+  const floorCounts = { con: 5, gf: 18, '1f': 23, '2f': 11, '3f': 9 };
 
-    // Show/hide rows
+  function applyFilters() {
     const rows = document.querySelectorAll('.brand-row');
+    let visible = 0;
+
     rows.forEach(row => {
-      if (floor === 'all' || row.dataset.floor === floor) {
+      const rowFloors  = row.dataset.floor.split(' ');
+      const floorMatch = activeFloor === 'all' || rowFloors.includes(activeFloor);
+      const catMatch   = activeCat === 'all'   || row.dataset.cat === activeCat;
+      if (floorMatch && catMatch) {
         row.classList.remove('hidden');
+        visible++;
       } else {
         row.classList.add('hidden');
       }
     });
 
-    // Hide cat-blocks where all rows are hidden
     document.querySelectorAll('.cat-block').forEach(block => {
-      const visibleRows = block.querySelectorAll('.brand-row:not(.hidden)');
-      block.classList.toggle('hidden', visibleRows.length === 0);
+      const vis = block.querySelectorAll('.brand-row:not(.hidden)').length;
+      block.classList.toggle('hidden', vis === 0);
     });
 
-    // Update store count
-    document.getElementById('store-count').textContent = floorCounts[floor] + ' Stores';
+    const countEl = document.getElementById('store-count');
+    if (activeCat === 'all' && activeFloor !== 'all') {
+      countEl.textContent = floorCounts[activeFloor] + ' Stores';
+    } else if (activeFloor === 'all' && activeCat === 'all') {
+      countEl.textContent = '63 Stores';
+    } else {
+      countEl.textContent = visible + ' Stores';
+    }
+
+    document.getElementById('empty-state').style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  function filterFloor(floor, el) {
+    activeFloor = floor;
+    document.querySelectorAll('.pill-floor').forEach(p => p.className = 'pill pill-floor');
+    el.className = 'pill pill-floor active-' + floor;
+    applyFilters();
+  }
+
+  function filterCat(cat, el) {
+    activeCat = cat;
+    document.querySelectorAll('.pill-cat').forEach(p => p.className = 'pill pill-cat');
+    el.classList.add('active');
+    applyFilters();
   }
 </script>
 
