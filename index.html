@@ -90,7 +90,7 @@
   /* ── FILTER BAR ────────────────────────────────────────── */
   .filter-bar {
     position: sticky;
-    top: 64px;
+    top: var(--header-h, 64px);
     z-index: 99;
     background: #F8F6F2;
     border-bottom: 1px solid rgba(0,0,0,0.07);
@@ -592,6 +592,13 @@
 </div>
 
 <script>
+  function syncHeaderOffset() {
+    const h = document.querySelector('.site-header').getBoundingClientRect().height;
+    document.documentElement.style.setProperty('--header-h', h + 'px');
+  }
+  syncHeaderOffset();
+  window.addEventListener('resize', syncHeaderOffset);
+
   let activeFloor = 'all';
   let activeCat   = 'all';
 
