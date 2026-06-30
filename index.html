@@ -107,6 +107,12 @@
     background: #fff;
     border-bottom: 1px solid rgba(0,0,0,0.08);
     padding: 12px 16px 11px;
+    transition: padding 0.28s ease, box-shadow 0.28s ease;
+  }
+
+  .site-header.is-scrolled {
+    padding: 7px 16px;
+    box-shadow: 0 2px 14px rgba(26,16,53,0.08);
   }
 
   .header-top {
@@ -125,6 +131,13 @@
     justify-content: center;
     flex-shrink: 0;
     overflow: hidden;
+    transition: width 0.28s ease, height 0.28s ease, transform 0.28s ease;
+  }
+
+  .site-header.is-scrolled .logo-mark {
+    width: 38px;
+    height: 38px;
+    transform: translateX(-1px);
   }
 
   .logo-mark img {
@@ -143,7 +156,10 @@
     letter-spacing: 0.03em;
     text-transform: uppercase;
     line-height: 1;
+    transition: font-size 0.28s ease;
   }
+
+  .site-header.is-scrolled .site-title { font-size: 13px; }
 
   .site-title span { color: #C040C0; }
 
@@ -154,6 +170,16 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     margin-top: 3px;
+    max-height: 14px;
+    opacity: 1;
+    overflow: hidden;
+    transition: max-height 0.24s ease, opacity 0.2s ease, margin-top 0.24s ease;
+  }
+
+  .site-header.is-scrolled .site-subtitle {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
   }
 
   .store-count-badge {
@@ -167,6 +193,12 @@
     color: #561AAD;
     letter-spacing: 0.03em;
     white-space: nowrap;
+    transition: padding 0.28s ease, font-size 0.28s ease;
+  }
+
+  .site-header.is-scrolled .store-count-badge {
+    padding: 4px 9px;
+    font-size: 10px;
   }
 
   /* ── FILTER BAR ────────────────────────────────────────── */
@@ -217,10 +249,19 @@
     border: 1.5px solid rgba(0,0,0,0.10);
     background: #fff;
     color: #5040A0;
-    transition: all 0.15s ease;
+    transition: all 0.15s ease, transform 0.12s ease;
     white-space: nowrap;
     user-select: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
   }
+
+  .pill:active { transform: scale(0.94); }
+
+  .pill-icon { width: 12px; height: 12px; flex-shrink: 0; display: inline-flex; }
+  .pill-icon svg { width: 100%; height: 100%; }
+  .pill-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
   /* Floor active states */
   .pill.pill-floor.active-all { background: #1A1035; color: #fff; border-color: #1A1035; }
@@ -229,6 +270,18 @@
   .pill.pill-floor.active-1f  { background: #7B45FF; color: #fff; border-color: #7B45FF; }
   .pill.pill-floor.active-2f  { background: #4D7BFF; color: #fff; border-color: #4D7BFF; }
   .pill.pill-floor.active-3f  { background: #FF3EB5; color: #fff; border-color: #FF3EB5; }
+
+  .pill.pill-floor.active-con .pill-dot,
+  .pill.pill-floor.active-gf  .pill-dot,
+  .pill.pill-floor.active-1f  .pill-dot,
+  .pill.pill-floor.active-2f  .pill-dot,
+  .pill.pill-floor.active-3f  .pill-dot { background: #fff; }
+
+  .dot-con { background: #C07FFF; }
+  .dot-gf  { background: #C040C0; }
+  .dot-1f  { background: #7B45FF; }
+  .dot-2f  { background: #4D7BFF; }
+  .dot-3f  { background: #FF3EB5; }
 
   /* Category active state */
   .pill.pill-cat.active { background: #1A1035; color: #fff; border-color: #1A1035; }
@@ -265,7 +318,10 @@
     border-bottom: 1px solid rgba(0,0,0,0.04);
     background: #fff;
     gap: 8px;
+    transition: background 0.15s ease;
   }
+
+  .brand-row:active { background: #F8F6FF; }
 
   .brand-row:last-child { border-bottom: none; }
 
@@ -349,7 +405,10 @@
     border-radius: 12px;
     border: 1px solid transparent;
     overflow: hidden;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
   }
+
+  .floor-card:active { transform: scale(0.97); }
 
   .fc-gf  { background: rgba(192,64,192,0.07);  border-color: rgba(192,64,192,0.22); }
   .fc-1f  { background: rgba(123,69,255,0.07);  border-color: rgba(123,69,255,0.22); }
@@ -422,6 +481,43 @@
   /* ── HIDE/SHOW ─────────────────────────────────────────── */
   .brand-row.hidden { display: none; }
   .cat-block.hidden { display: none; }
+
+  /* ── SCROLL TO TOP ─────────────────────────────────────── */
+  @keyframes scrollTopIn {
+    from { opacity: 0; transform: translateY(10px) scale(0.85); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .scroll-top-btn {
+    position: fixed;
+    right: 16px;
+    bottom: 18px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #561AAD, #C040C0);
+    box-shadow: 0 4px 16px rgba(86,26,173,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 90;
+    opacity: 0;
+    transform: translateY(10px) scale(0.85);
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.2s ease;
+  }
+
+  .scroll-top-btn.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+    animation: scrollTopIn 0.3s ease;
+  }
+
+  .scroll-top-btn:active { transform: scale(0.9); }
+
+  .scroll-top-btn svg { width: 17px; height: 17px; }
 </style>
 </head>
 <body>
@@ -430,11 +526,11 @@
 <div class="promo-banner" id="promo-banner">
   <span class="promo-icon">
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.35)" stroke-width="1.4"/>
-      <circle cx="12" cy="12" r="4" fill="#fff"/>
+      <path d="M12 3L13.8 9.6L20 12L13.8 14.4L12 21L10.2 14.4L4 12L10.2 9.6L12 3Z" fill="#fff"/>
+      <circle cx="19" cy="5" r="1.6" fill="#fff" opacity="0.7"/>
     </svg>
   </span>
-  <span class="promo-text"><strong>Upcoming: Walkathon</strong><span class="promo-sub">Join us at Felix Plaza — details soon</span></span>
+  <span class="promo-text"><strong>Upcoming: Shop &amp; Win</strong><span class="promo-sub">Felix Plaza's next big event — details soon</span></span>
   <div class="promo-close" id="promo-close" onclick="closePromo()">
     <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M1 1L9 9M9 1L1 9" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
@@ -443,7 +539,7 @@
 </div>
 
 <!-- HEADER -->
-<header class="site-header">
+<header class="site-header" id="site-header">
   <div class="header-top">
     <div class="logo-mark">
       <img src="logo.png" alt="Felix Plaza Logo">
@@ -463,11 +559,11 @@
     <div class="filter-label">Floor</div>
     <div class="filter-pills">
       <div class="pill pill-floor active-all" onclick="filterFloor('all',this)">All</div>
-      <div class="pill pill-floor" onclick="filterFloor('con',this)">CON</div>
-      <div class="pill pill-floor" onclick="filterFloor('gf',this)">GF</div>
-      <div class="pill pill-floor" onclick="filterFloor('1f',this)">1F</div>
-      <div class="pill pill-floor" onclick="filterFloor('2f',this)">2F</div>
-      <div class="pill pill-floor" onclick="filterFloor('3f',this)">3F</div>
+      <div class="pill pill-floor" onclick="filterFloor('con',this)"><span class="pill-dot dot-con"></span>CON</div>
+      <div class="pill pill-floor" onclick="filterFloor('gf',this)"><span class="pill-dot dot-gf"></span>GF</div>
+      <div class="pill pill-floor" onclick="filterFloor('1f',this)"><span class="pill-dot dot-1f"></span>1F</div>
+      <div class="pill pill-floor" onclick="filterFloor('2f',this)"><span class="pill-dot dot-2f"></span>2F</div>
+      <div class="pill pill-floor" onclick="filterFloor('3f',this)"><span class="pill-dot dot-3f"></span>3F</div>
     </div>
   </div>
 
@@ -477,12 +573,12 @@
     <div class="filter-label">Browse</div>
     <div class="filter-pills">
       <div class="pill pill-cat active" onclick="filterCat('all',this)">All</div>
-      <div class="pill pill-cat" onclick="filterCat('fashion',this)">Fashion</div>
-      <div class="pill pill-cat" onclick="filterCat('food',this)">Food</div>
-      <div class="pill pill-cat" onclick="filterCat('beauty',this)">Beauty</div>
-      <div class="pill pill-cat" onclick="filterCat('home',this)">Home</div>
-      <div class="pill pill-cat" onclick="filterCat('entertainment',this)">Entertainment</div>
-      <div class="pill pill-cat" onclick="filterCat('kids',this)">Kids</div>
+      <div class="pill pill-cat" onclick="filterCat('fashion',this)"><span class="pill-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5a2 2 0 1 1 2 2c-.2 0-.4 0-.6-.1L12 8l-1.4-1.1c-.2.1-.4.1-.6.1a2 2 0 1 1 2-2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M12 8 3 13l2.2 2.6L8 14v6h8v-6l2.8 1.6L21 13l-9-5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></span>Fashion</div>
+      <div class="pill pill-cat" onclick="filterCat('food',this)"><span class="pill-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3v8M4 3v5a2 2 0 0 0 4 0V3M6 11v10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M18 3c-2 0-3 2.5-3 5.5S16 13 18 13v8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Food</div>
+      <div class="pill pill-cat" onclick="filterCat('beauty',this)"><span class="pill-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c2.5 4 5 7.2 5 11a5 5 0 1 1-10 0c0-3.8 2.5-7 5-11Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></span>Beauty</div>
+      <div class="pill pill-cat" onclick="filterCat('home',this)"><span class="pill-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 11.5 12 4l8 7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v10h12V10" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></span>Home</div>
+      <div class="pill pill-cat" onclick="filterCat('entertainment',this)"><span class="pill-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2 14.6 9.2 22 9.9l-5.6 4.8 1.7 7.1L12 17.9 5.9 21.8l1.7-7.1L2 9.9l7.4-.7L12 2Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></span>Entertainment</div>
+      <div class="pill pill-cat" onclick="filterCat('kids',this)"><span class="pill-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="9" r="4" stroke="currentColor" stroke-width="1.4"/><path d="M5 21c0-3.5 3-6 7-6s7 2.5 7 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>Kids</div>
     </div>
   </div>
 
@@ -689,6 +785,12 @@
   </div>
 </div>
 
+<div class="scroll-top-btn" id="scroll-top-btn" onclick="scrollToTop()">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 19V5M5 12l7-7 7 7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</div>
+
 <script>
   function closePromo() {
     document.getElementById('promo-banner').classList.add('hidden');
@@ -700,6 +802,22 @@
   }
   syncHeaderOffset();
   window.addEventListener('resize', syncHeaderOffset);
+
+  const siteHeader = document.getElementById('site-header');
+  const scrollBtn  = document.getElementById('scroll-top-btn');
+
+  function handleScroll() {
+    const y = window.scrollY || document.documentElement.scrollTop;
+    siteHeader.classList.toggle('is-scrolled', y > 24);
+    scrollBtn.classList.toggle('visible', y > 420);
+    syncHeaderOffset();
+  }
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll();
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   let activeFloor = 'all';
   let activeCat   = 'all';
