@@ -366,13 +366,43 @@
   .empty-state .empty-icon { font-size: 32px; margin-bottom: 10px; }
 
   /* ── DIVIDER ───────────────────────────────────────────── */
-  .zone-divider {
-    height: 1px;
-    margin: 8px 0;
-    background: linear-gradient(90deg,
-      transparent 0%, rgba(192,64,192,0.28) 30%,
-      rgba(123,69,255,0.14) 70%, transparent 100%);
+  @keyframes dividerFade {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50%       { opacity: 1;   transform: scale(1.35); }
   }
+
+  .zone-divider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 20px 28px;
+  }
+
+  .zone-divider::before,
+  .zone-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(86,26,173,0.18), transparent);
+  }
+
+  .zone-divider-dots {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .zone-divider-dots span {
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    animation: dividerFade 2.4s ease-in-out infinite;
+  }
+
+  .zone-divider-dots span:nth-child(1) { background: #C040C0; animation-delay: 0s; }
+  .zone-divider-dots span:nth-child(2) { background: #7B45FF; animation-delay: 0.4s; }
+  .zone-divider-dots span:nth-child(3) { background: #4D7BFF; animation-delay: 0.8s; }
 
   /* ── FLOOR GUIDE CARDS ─────────────────────────────────── */
   .floor-guide {
@@ -548,7 +578,7 @@
       <div class="site-title">Felix <span>Plaza</span></div>
       <div class="site-subtitle">Store Directory</div>
     </div>
-    <div class="store-count-badge" id="store-count">63 Stores</div>
+    <div class="store-count-badge" id="store-count" style="display:none"></div>
   </div>
 </header>
 
@@ -589,20 +619,15 @@
 
   <div class="cat-block" data-cat="fashion">
     <div class="cat-header">Fashion &amp; Accessories</div>
-    <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">Aretto</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
-    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">ASICS</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
     <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">Barara Ethnic</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
     <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">Biba</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
-    <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Birken Stock</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
     <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Bluestone</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
     <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Bonkers Corner</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
     <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Calvin Klein</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
     <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">CaratLane</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
-    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Crocs</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
     <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">GIVA</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
     <div class="brand-row br-gf" data-floor="gf 1f" data-cat="fashion"><span class="brand-name">H&amp;M</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span><span class="ftag ftag-1f">1F</span></div></div>
     <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Hidesign</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
-    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">INC.5</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
     <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Levi's</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
     <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">Libas</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
     <div class="brand-row br-gf" data-floor="gf 1f 2f" data-cat="fashion"><span class="brand-name">Lifestyle</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span><span class="ftag ftag-1f">1F</span><span class="ftag ftag-2f">2F</span></div></div>
@@ -610,14 +635,11 @@
     <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Marks &amp; Spencer</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
     <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Max Fashion</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
     <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">Meena Bazaar</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
-    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Mochi</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
     <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">Nykd By Nykaa</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
     <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Pepe Jeans</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
-    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">PUMA</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
     <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">R&amp;B</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
     <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Rareism</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
     <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">Sabhyata</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
-    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Skechers</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
     <div class="brand-row br-con" data-floor="con" data-cat="fashion"><span class="brand-name">Style Union</span><div class="ftag-group"><span class="ftag ftag-con">CON</span></div></div>
     <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">The Bear House</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
     <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Tommy Hilfiger</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
@@ -635,17 +657,34 @@
     <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">TASVA</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
   </div>
 
+  <div class="cat-block" data-cat="fashion">
+    <div class="cat-header">Athleisure &amp; Footwear</div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">ASICS</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-2f" data-floor="2f" data-cat="fashion"><span class="brand-name">Aretto</span><div class="ftag-group"><span class="ftag ftag-2f">2F</span></div></div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="fashion"><span class="brand-name">Birken Stock</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Crocs</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">INC.5</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Mochi</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">PUMA</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="fashion"><span class="brand-name">Skechers</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+  </div>
+
   <div class="cat-block" data-cat="food">
     <div class="cat-header">Food &amp; Dining</div>
     <div class="brand-row br-3f" data-floor="3f" data-cat="food"><span class="brand-name">Amritsari Express</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
-    <div class="brand-row br-gf" data-floor="gf" data-cat="food"><span class="brand-name">Blue Tokai</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
     <div class="brand-row br-3f" data-floor="3f" data-cat="food"><span class="brand-name">Burger King</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
-    <div class="brand-row br-1f" data-floor="1f" data-cat="food"><span class="brand-name">Chaayos</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
     <div class="brand-row br-3f" data-floor="3f" data-cat="food"><span class="brand-name">KFC</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
     <div class="brand-row br-3f" data-floor="3f" data-cat="food"><span class="brand-name">Taco Bell</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
     <div class="brand-row br-3f" data-floor="3f" data-cat="food"><span class="brand-name">The Indian Stories</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
     <div class="brand-row br-3f" data-floor="3f" data-cat="food"><span class="brand-name">Toniq</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
     <div class="brand-row br-3f" data-floor="3f" data-cat="food"><span class="brand-name">Wow (Momos, China &amp; Kulfi)</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
+  </div>
+
+  <div class="cat-block" data-cat="food">
+    <div class="cat-header">Café</div>
+    <div class="brand-row br-gf" data-floor="gf" data-cat="food"><span class="brand-name">Blue Tokai</span><div class="ftag-group"><span class="ftag ftag-gf">GF</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="food"><span class="brand-name">Chaayos</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="food"><span class="brand-name">Third Wave Coffee</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
   </div>
 
   <div class="cat-block" data-cat="beauty">
@@ -657,11 +696,13 @@
   </div>
 
   <div class="cat-block" data-cat="home">
-    <div class="cat-header">Home &amp; Electronics</div>
+    <div class="cat-header">Home &amp; Lifestyle</div>
+    <div class="brand-row br-con" data-floor="con" data-cat="home"><span class="brand-name">Frido</span><div class="ftag-group"><span class="ftag ftag-con">CON</span></div></div>
     <div class="brand-row br-con" data-floor="con" data-cat="home"><span class="brand-name">HappyNest</span><div class="ftag-group"><span class="ftag ftag-con">CON</span></div></div>
     <div class="brand-row br-3f" data-floor="3f" data-cat="home"><span class="brand-name">Market 99</span><div class="ftag-group"><span class="ftag ftag-3f">3F</span></div></div>
     <div class="brand-row br-1f" data-floor="1f" data-cat="home"><span class="brand-name">Miniso</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
     <div class="brand-row br-con" data-floor="con" data-cat="home"><span class="brand-name">Mr. DIY</span><div class="ftag-group"><span class="ftag ftag-con">CON</span></div></div>
+    <div class="brand-row br-1f" data-floor="1f" data-cat="home"><span class="brand-name">Samsonite</span><div class="ftag-group"><span class="ftag ftag-1f">1F</span></div></div>
     <div class="brand-row br-con" data-floor="con" data-cat="home"><span class="brand-name">The Sleep Company</span><div class="ftag-group"><span class="ftag ftag-con">CON</span></div></div>
     <div class="brand-row br-con" data-floor="con" data-cat="home"><span class="brand-name">Wakefit</span><div class="ftag-group"><span class="ftag ftag-con">CON</span></div></div>
   </div>
@@ -689,7 +730,7 @@
 
 </div>
 
-<div class="zone-divider"></div>
+<div class="zone-divider"><div class="zone-divider-dots"><span></span><span></span><span></span></div></div>
 
 <!-- FLOOR GUIDE CARDS — CON first -->
 <div class="floor-guide">
@@ -708,7 +749,6 @@
         <div class="card-brand-item">The Sleep Company</div>
         <div class="card-brand-item">Mr. DIY</div>
         <div class="card-brand-item">HappyNest</div>
-        <div class="card-count">5 Stores</div>
       </div>
     </div>
 
@@ -726,7 +766,6 @@
         <div class="card-brand-item">CaratLane</div>
         <div class="card-brand-item">Nykaa</div>
         <div class="card-brand-item">Levi's</div>
-        <div class="card-count">18 Stores</div>
       </div>
     </div>
 
@@ -744,7 +783,6 @@
         <div class="card-brand-item">Samsung</div>
         <div class="card-brand-item">Chaayos</div>
         <div class="card-brand-item">R&amp;B</div>
-        <div class="card-count">23 Stores</div>
       </div>
     </div>
 
@@ -761,7 +799,6 @@
         <div class="card-brand-item">TASVA</div>
         <div class="card-brand-item">Babyshop</div>
         <div class="card-brand-item">Om Book Shop</div>
-        <div class="card-count">11 Stores</div>
       </div>
     </div>
 
@@ -778,7 +815,6 @@
         <div class="card-brand-item">Fun City</div>
         <div class="card-brand-item">Toniq</div>
         <div class="card-brand-item">Market 99</div>
-        <div class="card-count">9 Stores</div>
       </div>
     </div>
 
